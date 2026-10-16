@@ -142,3 +142,4 @@ func _update_visuals(delta: float) -> void:
 		var mesh: Node2D = visual_root.get_node("StalkerMesh")
 		if mesh.has_method("set_visual_state"):
 			mesh.set_visual_state(undulation_phase, is_jaw_open, state == AIState.ATTACK)
+

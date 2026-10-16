@@ -51,3 +51,4 @@ func _draw() -> void:
 	draw_circle(Vector2(9.0, -2.0), 3.5, eye_color)
 	draw_circle(Vector2(10.0, -2.0), 1.5, eye_pupil)
 	draw_circle(Vector2(9.0, -3.0), 0.8, Color.WHITE) # Glint
+

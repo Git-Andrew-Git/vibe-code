@@ -35,6 +35,9 @@ var equipped_tank: String = ""
 var equipped_fins: String = ""
 var selected_hotbar_slot: int = 0
 
+# ---- Story Log ----
+var story_entries: Array[String] = []
+
 func _ready() -> void:
 	ItemDatabaseClass.init_database()
 	_ensure_default_inputs()
@@ -243,7 +246,7 @@ func recalculate_equipment() -> void:
 
 	player_stats["max_oxygen"] = base_oxygen
 	player_stats["oxygen"] = minf(player_stats["oxygen"], base_oxygen)
-	EventBus.player_oxygen_changed.emit(player_stats.oxygen, player_stats.max_oxygen)
+	EventBus.player_oxygen_changed.emit(player_stats["oxygen"], player_stats["max_oxygen"])
 
 func _ensure_default_inputs() -> void:
 	var default_mappings := {
@@ -276,7 +279,8 @@ func save_game() -> bool:
 		"zone": current_zone,
 		"inventory": inventory,
 		"equipped_tank": equipped_tank,
-		"equipped_fins": equipped_fins
+		"equipped_fins": equipped_fins,
+		"story_entries": story_entries
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if not file:
@@ -308,6 +312,7 @@ func load_game() -> bool:
 		equipped_tank = data.get("equipped_tank", "")
 		equipped_fins = data.get("equipped_fins", "")
 		recalculate_equipment()
+		story_entries = data.get("story_entries", [])
 		_emit_all_stats()
 		EventBus.inventory_updated.emit()
 		return true

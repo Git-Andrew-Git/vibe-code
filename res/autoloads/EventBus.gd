@@ -26,3 +26,5 @@ signal objective_updated(objective_id: String, status: String)
 # UI signals
 signal ui_toggle_requested(menu_name: String)
 signal notification_posted(message: String, type: String)
+
+signal story_log_updated(entry: String)

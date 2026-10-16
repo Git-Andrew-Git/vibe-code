@@ -135,3 +135,4 @@ func catch_fish() -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.2)
 	tween.tween_callback(queue_free)
+

@@ -4,3 +4,4 @@
 
 [node name="TestEcosystemFauna" type="Node"]
 script = ExtResource("1_test")
+

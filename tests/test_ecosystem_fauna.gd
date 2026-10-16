@@ -100,3 +100,4 @@ func _ready() -> void:
 
 	print("--- ALL %d ECOSYSTEM TESTS PASSED SUCCESSFULLY! ---" % tests_passed)
 	get_tree().quit(0)
+

@@ -83,3 +83,4 @@ func _draw() -> void:
 	# Lower Fangs
 	draw_line(Vector2(30.0, jaw_spread * 0.6), Vector2(30.0, -2.0), tooth_color, 2.0)
 	draw_line(Vector2(38.0, jaw_spread * 0.8), Vector2(38.0, 0.0), tooth_color, 2.0)
+

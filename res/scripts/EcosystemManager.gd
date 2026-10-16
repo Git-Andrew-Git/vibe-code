@@ -37,3 +37,4 @@ func _spawn_initial_ecosystem() -> void:
 		var stalker := PredatorFaunaScene.instantiate() as CharacterBody2D
 		stalker.position = pos
 		add_child(stalker)
+
