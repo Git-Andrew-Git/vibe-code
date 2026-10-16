@@ -112,3 +112,4 @@ func _ready() -> void:
 
 	print("--- ALL %d TESTS PASSED SUCCESSFULLY! ---" % tests_passed)
 	get_tree().quit(0)
+

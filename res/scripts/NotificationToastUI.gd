@@ -31,3 +31,4 @@ func _on_notification_posted(message: String, type: String) -> void:
 	tween.tween_interval(2.0)
 	tween.tween_property(label, "modulate:a", 0.0, 0.8)
 	tween.tween_callback(label.queue_free)
+

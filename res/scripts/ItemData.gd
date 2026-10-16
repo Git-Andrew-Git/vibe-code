@@ -20,3 +20,4 @@ enum ItemCategory {
 
 func can_use() -> bool:
 	return category == ItemCategory.CONSUMABLE or category == ItemCategory.EQUIPMENT
+

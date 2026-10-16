@@ -23,10 +23,10 @@
 - [x] Inventory grid UI + Hotbar
 - [x] Crafting recipe engine
 
-## M4 — Ecosystem (Flora & Fauna)
-- [ ] Harvestable kelp and coral nodes
-- [ ] Passive alien fish pathfinding (Flocking / Wandering)
-- [ ] Aggressive fauna AI state machine
+## M4 — Ecosystem (Flora & Fauna) (COMPLETE)
+- [x] Harvestable kelp and coral nodes
+- [x] Passive alien fish pathfinding (Flocking / Wandering)
+- [x] Aggressive fauna AI state machine
 
 ## M5 — Story Audio & Narrative UI
 - [ ] Dialogue window system

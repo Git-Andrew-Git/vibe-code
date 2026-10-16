@@ -154,3 +154,4 @@ func _update_equipment_labels() -> void:
 			equip_fins_label.text = "Fins: %s (+35%% Speed)" % f_name
 		else:
 			equip_fins_label.text = "Fins: None (Standard Swim Speed)"
+

@@ -9,3 +9,4 @@ class_name RecipeData
 @export var ingredients: Dictionary = {} # item_id -> int required
 @export var craft_time: float = 1.0
 @export var category: String = "Survival"
+

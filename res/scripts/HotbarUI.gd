@@ -33,3 +33,4 @@ func _refresh_hotbar() -> void:
 			slot_btn.modulate = Color(0.4, 0.45, 0.5, 0.5)
 
 		add_child(slot_btn)
+

@@ -4,3 +4,4 @@
 
 [node name="TestSurvivalInventory" type="Node"]
 script = ExtResource("1_test")
+

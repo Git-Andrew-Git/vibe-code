@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://res/scripts/Main.gd" id="1_main"]
 [ext_resource type="TileSet" path="res://res/materials/seabed_tileset.tres" id="2_tileset"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://res/scripts/HotbarUI.gd" id="11_hotbar"]
 [ext_resource type="Script" path="res://res/scripts/NotificationToastUI.gd" id="12_toast"]
 [ext_resource type="Script" path="res://res/scripts/InventoryMenuUI.gd" id="13_invmenu"]
+[ext_resource type="Script" path="res://res/scripts/EcosystemManager.gd" id="14_ecosystem"]
 
 [sub_resource type="Gradient" id="Gradient_plankton"]
 colors = PackedColorArray(0.3, 0.9, 0.8, 0.6, 0.1, 0.4, 0.6, 0)
@@ -210,6 +211,44 @@ theme_override_font_sizes/font_size = 12
 text = "[E] Harvest Kelp"
 horizontal_alignment = 1
 
+[node name="CoralNode1" type="Area2D" parent="Environment/Harvestables"]
+position = Vector2(380, -280)
+script = ExtResource("10_harvest")
+item_id = "coral_sample"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Harvestables/CoralNode1"]
+shape = SubResource("CircleShape2D_harvest")
+
+[node name="PromptLabel" type="Label" parent="Environment/Harvestables/CoralNode1"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Harvest Coral"
+horizontal_alignment = 1
+
+[node name="CoralNode2" type="Area2D" parent="Environment/Harvestables"]
+position = Vector2(-420, 310)
+script = ExtResource("10_harvest")
+item_id = "coral_sample"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Harvestables/CoralNode2"]
+shape = SubResource("CircleShape2D_harvest")
+
+[node name="PromptLabel" type="Label" parent="Environment/Harvestables/CoralNode2"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Harvest Coral"
+horizontal_alignment = 1
+
+[node name="Ecosystem" type="Node2D" parent="Environment"]
+z_index = 4
+script = ExtResource("14_ecosystem")
+
 [node name="Player" parent="." instance=ExtResource("7_player")]
 z_index = 5
 
@@ -388,7 +427,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 0.75)
 theme_override_font_sizes/font_size = 13
-text = "WASD: Move | Shift: Sprint | E: Harvest | 1-5: Use Hotbar | TAB: PDA / Fabricator"
+text = "WASD: Move | Shift: Sprint | E: Harvest/Catch | 1-5: Hotbar | TAB: PDA / Fabricator"
 horizontal_alignment = 1
 
 [node name="PDAButton" type="Button" parent="UI/HUD"]
