@@ -1,0 +1,38 @@
+# Godot
+.godot/
+
+# Builds
+export/
+build/
+dist/
+*.zip
+
+# Assets (large binaries — keep out of git, use LFS or separate pipeline)
+# Un-comment the lines you want to ignore. By default we TRACK assets.
+# assets/**/*.png
+# assets/**/*.jpg
+# assets/**/*.wav
+# assets/**/*.ogg
+# assets/**/*.mp3
+# assets/**/*.psd
+# assets/**/*.blend
+# assets/**/*.fbx
+# assets/**/*.gltf
+# assets/**/*.bin
+
+# IDE / Editor
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Misc
+*.log
+*.tmp
+*.bak

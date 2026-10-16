@@ -1,0 +1,39 @@
+[config]
+
+name="Alien Ocean Survival"
+description="2D Singleplayer Open-World Survival & Crafting Game set on an alien water planet."
+config/version="0.1.0"
+run/main_scene="res://res/scenes/Main.tscn"
+config/features=PackedStringArray("4.3", "Forward Plus")
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=0
+window/size/resizable=true
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
+[rendering]
+
+textures/vram_compression/import_s3tc_bptc=true
+textures/default_filters/texture_filter=1
+renderer/rendering_method="forward_plus"
+
+[autoload]
+
+EventBus="*res://res/autoloads/EventBus.gd"
+GameState="*res://res/autoloads/GameState.gd"
+AudioManager="*res://res/autoloads/AudioManager.gd"
+
+[dotnet]
+
+project/assembly_name="Alien Ocean Survival"
+
+[application]
+
+boot_splash/image=""
+boot_splash/fullsize=true
+boot_splash/use_filter=true

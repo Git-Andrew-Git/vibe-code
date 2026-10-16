@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="24" fill="#0b1d3a"/>
+  <!-- Waves -->
+  <path d="M 0,70 Q 32,50 64,70 T 128,70 L 128,128 L 0,128 Z" fill="#1b4965" opacity="0.8"/>
+  <path d="M 0,85 Q 32,65 64,85 T 128,85 L 128,128 L 0,128 Z" fill="#62b6cb" opacity="0.6"/>
+  <!-- Alien glowing orb -->
+  <circle cx="64" cy="45" r="18" fill="#5fa8d3"/>
+  <circle cx="64" cy="45" r="12" fill="#bee9e8"/>
+  <!-- Planet ring -->
+  <ellipse cx="64" cy="45" rx="32" ry="8" fill="none" stroke="#bee9e8" stroke-width="2" transform="rotate(-15 64 45)"/>
+</svg>
