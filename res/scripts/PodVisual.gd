@@ -30,3 +30,4 @@ func _draw() -> void:
 	# 5. Emergency Beacon Antenna
 	draw_line(Vector2(-80.0, 50.0), Vector2(-80.0, 25.0), Color(0.7, 0.7, 0.7), 3.0)
 	draw_circle(Vector2(-80.0, 22.0), 5.0, beacon_red)
+

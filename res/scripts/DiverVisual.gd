@@ -74,3 +74,4 @@ func _draw() -> void:
 		Vector2(70.0, -220.0)
 	])
 	draw_colored_polygon(light_cone, Color(0.9, 0.95, 1.0, 0.12))
+

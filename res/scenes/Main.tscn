@@ -1,31 +1,44 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://res/scripts/Main.gd" id="1_main"]
-[ext_resource type="PackedScene" path="res://res/scenes/Player.tscn" id="2_player"]
-[ext_resource type="Script" path="res://res/scripts/PodArea.gd" id="3_pod"]
-[ext_resource type="Script" path="res://res/scripts/PodVisual.gd" id="4_podvis"]
-[ext_resource type="Script" path="res://res/scripts/ReefVisual.gd" id="5_reef"]
+[ext_resource type="TileSet" path="res://res/materials/seabed_tileset.tres" id="2_tileset"]
+[ext_resource type="Script" path="res://res/scripts/WorldGenerator.gd" id="3_worldgen"]
+[ext_resource type="Script" path="res://res/scripts/ReefVisual.gd" id="4_reef"]
+[ext_resource type="Script" path="res://res/scripts/PodArea.gd" id="5_pod"]
+[ext_resource type="Script" path="res://res/scripts/PodVisual.gd" id="6_podvis"]
+[ext_resource type="PackedScene" path="res://res/scenes/Player.tscn" id="7_player"]
+[ext_resource type="Material" path="res://res/materials/water_caustics_material.tres" id="8_watermat"]
+[ext_resource type="Script" path="res://res/scripts/DayNightCycle.gd" id="9_daynight"]
+
+[sub_resource type="Gradient" id="Gradient_plankton"]
+colors = PackedColorArray(0.3, 0.9, 0.8, 0.6, 0.1, 0.4, 0.6, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pod"]
 size = Vector2(240, 180)
 
-[sub_resource type="Gradient" id="Gradient_plankton"]
-colors = PackedColorArray(0.3, 0.9, 0.8, 0.6, 0.1, 0.4, 0.6, 0)
+[sub_resource type="Gradient" id="Gradient_radial"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_light"]
+gradient = SubResource("Gradient_radial")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
 
 [node name="Environment" type="Node2D" parent="."]
 
-[node name="OceanWater" type="ColorRect" parent="Environment"]
-offset_left = -4000.0
-offset_top = -4000.0
-offset_right = 4000.0
-offset_bottom = 4000.0
-color = Color(0.04, 0.12, 0.2, 1)
+[node name="SeabedLayer" type="TileMapLayer" parent="Environment"]
+tile_set = ExtResource("2_tileset")
+script = ExtResource("3_worldgen")
 
 [node name="PlanktonParticles" type="CPUParticles2D" parent="Environment"]
-amount = 64
+z_index = 2
+amount = 80
 lifetime = 6.0
 emission_shape = 3
 emission_rect_extents = Vector2(2500, 2500)
@@ -40,36 +53,72 @@ color = Color(0.3, 0.9, 0.85, 0.5)
 color_ramp = SubResource("Gradient_plankton")
 
 [node name="ReefCluster1" type="Node2D" parent="Environment"]
+z_index = 1
 position = Vector2(-450, -300)
-script = ExtResource("5_reef")
+script = ExtResource("4_reef")
 
 [node name="ReefCluster2" type="Node2D" parent="Environment"]
+z_index = 1
 position = Vector2(550, 320)
-script = ExtResource("5_reef")
+script = ExtResource("4_reef")
 reef_radius = 80.0
 
 [node name="ReefCluster3" type="Node2D" parent="Environment"]
+z_index = 1
 position = Vector2(-380, 500)
-script = ExtResource("5_reef")
+script = ExtResource("4_reef")
 reef_radius = 55.0
 
 [node name="ReefCluster4" type="Node2D" parent="Environment"]
+z_index = 1
 position = Vector2(620, -420)
-script = ExtResource("5_reef")
+script = ExtResource("4_reef")
 reef_radius = 70.0
 
 [node name="PodRaft" type="Area2D" parent="Environment"]
-script = ExtResource("3_pod")
+z_index = 2
+script = ExtResource("5_pod")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/PodRaft"]
 shape = SubResource("RectangleShape2D_pod")
 
 [node name="PodVisual" type="Node2D" parent="Environment/PodRaft"]
-script = ExtResource("4_podvis")
+script = ExtResource("6_podvis")
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="DeckLight" type="PointLight2D" parent="Environment/PodRaft"]
+scale = Vector2(4, 3.5)
+color = Color(0.98, 0.75, 0.35, 1)
+energy = 1.0
+texture = SubResource("GradientTexture2D_light")
+
+[node name="BeaconLight" type="PointLight2D" parent="Environment/PodRaft"]
+position = Vector2(-80, 22)
+scale = Vector2(2.5, 2.5)
+color = Color(1, 0.3, 0.2, 1)
+energy = 1.4
+texture = SubResource("GradientTexture2D_light")
+
+[node name="Player" parent="." instance=ExtResource("7_player")]
+z_index = 5
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+z_index = 8
+copy_mode = 2
+rect = Rect2(-5000, -5000, 10000, 10000)
+
+[node name="WaterCaustics" type="ColorRect" parent="."]
+z_index = 9
+material = ExtResource("8_watermat")
+offset_left = -5000.0
+offset_top = -5000.0
+offset_right = 5000.0
+offset_bottom = 5000.0
+
+[node name="DayNightLighting" type="CanvasModulate" parent="."]
+script = ExtResource("9_daynight")
 
 [node name="UI" type="CanvasLayer" parent="."]
+layer = 1
 
 [node name="HUD" type="Control" parent="UI"]
 layout_mode = 3

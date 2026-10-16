@@ -16,3 +16,4 @@ func _on_body_entered(body: Node2D) -> void:
 func _on_body_exited(body: Node2D) -> void:
 	if body is PlayerClass or body.has_method("set_movement_mode"):
 		body.set_movement_mode(PlayerClass.MovementMode.SWIMMING)
+

@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3]
+
+[ext_resource type="Shader" path="res://assets/shaders/water_caustics.gdshader" id="1_shader"]
+
+[resource]
+shader = ExtResource("1_shader")
+shader_parameter/water_tint = Color(0.06, 0.28, 0.38, 0.28)
+shader_parameter/caustic_color = Color(0.35, 0.88, 0.95, 0.4)
+shader_parameter/caustic_scale = 0.006
+shader_parameter/caustic_speed = 0.75
+shader_parameter/distortion_strength = 0.004

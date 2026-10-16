@@ -133,3 +133,4 @@ func set_movement_mode(new_mode: MovementMode) -> void:
 
 func _on_player_died() -> void:
 	print("Player health depleted. Game over triggered.")
+

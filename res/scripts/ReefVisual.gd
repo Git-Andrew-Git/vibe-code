@@ -18,3 +18,4 @@ func _draw() -> void:
 		var angle := i * (TAU / 5.0)
 		var pos := Vector2(cos(angle), sin(angle)) * (reef_radius * 0.65)
 		draw_circle(pos, 5.0, Color(0.9, 0.98, 1.0, 0.95))
+
