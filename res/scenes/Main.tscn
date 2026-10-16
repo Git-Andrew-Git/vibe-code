@@ -1,19 +1,73 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8n1q2v3w4e5"]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://res/scripts/Main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://res/scenes/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://res/scripts/PodArea.gd" id="3_pod"]
+[ext_resource type="Script" path="res://res/scripts/PodVisual.gd" id="4_podvis"]
+[ext_resource type="Script" path="res://res/scripts/ReefVisual.gd" id="5_reef"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pod"]
+size = Vector2(240, 180)
+
+[sub_resource type="Gradient" id="Gradient_plankton"]
+colors = PackedColorArray(0.3, 0.9, 0.8, 0.6, 0.1, 0.4, 0.6, 0)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
 
-[node name="Background" type="ColorRect" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1920.0
-offset_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.043, 0.114, 0.227, 1)
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="OceanWater" type="ColorRect" parent="Environment"]
+offset_left = -4000.0
+offset_top = -4000.0
+offset_right = 4000.0
+offset_bottom = 4000.0
+color = Color(0.04, 0.12, 0.2, 1)
+
+[node name="PlanktonParticles" type="CPUParticles2D" parent="Environment"]
+amount = 64
+lifetime = 6.0
+emission_shape = 3
+emission_rect_extents = Vector2(2500, 2500)
+direction = Vector2(0.5, -0.5)
+spread = 45.0
+gravity = Vector2(0, -5)
+initial_velocity_min = 10.0
+initial_velocity_max = 25.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(0.3, 0.9, 0.85, 0.5)
+color_ramp = SubResource("Gradient_plankton")
+
+[node name="ReefCluster1" type="Node2D" parent="Environment"]
+position = Vector2(-450, -300)
+script = ExtResource("5_reef")
+
+[node name="ReefCluster2" type="Node2D" parent="Environment"]
+position = Vector2(550, 320)
+script = ExtResource("5_reef")
+reef_radius = 80.0
+
+[node name="ReefCluster3" type="Node2D" parent="Environment"]
+position = Vector2(-380, 500)
+script = ExtResource("5_reef")
+reef_radius = 55.0
+
+[node name="ReefCluster4" type="Node2D" parent="Environment"]
+position = Vector2(620, -420)
+script = ExtResource("5_reef")
+reef_radius = 70.0
+
+[node name="PodRaft" type="Area2D" parent="Environment"]
+script = ExtResource("3_pod")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/PodRaft"]
+shape = SubResource("RectangleShape2D_pod")
+
+[node name="PodVisual" type="Node2D" parent="Environment/PodRaft"]
+script = ExtResource("4_podvis")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -25,56 +79,103 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="UI/HUD"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -60.0
-offset_right = 300.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 36
+[node name="InfoContainer" type="VBoxContainer" parent="UI/HUD"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 28.0
+offset_right = 400.0
+offset_bottom = 140.0
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="UI/HUD/InfoContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
 text = "ALIEN OCEAN SURVIVAL"
-horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="SubtitleLabel" type="Label" parent="UI/HUD"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = 0.0
-offset_right = 300.0
-offset_bottom = 40.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 18
-text = "Target Canvas: 1920×1080 | Engine: Godot 4.3 Forward+"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TimeLabel" type="Label" parent="UI/HUD"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 30.0
-offset_right = 250.0
-offset_bottom = 60.0
-theme_override_font_sizes/font_size = 20
-text = "Time: 08:00"
-
-[node name="ZoneLabel" type="Label" parent="UI/HUD"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 65.0
-offset_right = 300.0
-offset_bottom = 95.0
+[node name="ZoneLabel" type="Label" parent="UI/HUD/InfoContainer"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Zone: Alien Shallows"
+
+[node name="TimeLabel" type="Label" parent="UI/HUD/InfoContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Time: 08:00"
+
+[node name="MovementModeLabel" type="Label" parent="UI/HUD/InfoContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.75, 0.25, 1)
+theme_override_font_sizes/font_size = 15
+text = "State: WALKING (Aboard Pod)"
+
+[node name="VitalsContainer" type="VBoxContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -180.0
+offset_right = 360.0
+offset_bottom = -30.0
+grow_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="HealthSection" type="VBoxContainer" parent="UI/HUD/VitalsContainer"]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="UI/HUD/VitalsContainer/HealthSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "HEALTH: 100 / 100"
+
+[node name="HealthBar" type="ProgressBar" parent="UI/HUD/VitalsContainer/HealthSection"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="OxygenSection" type="VBoxContainer" parent="UI/HUD/VitalsContainer"]
+layout_mode = 2
+
+[node name="OxygenLabel" type="Label" parent="UI/HUD/VitalsContainer/OxygenSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "OXYGEN: 100 / 100"
+
+[node name="OxygenBar" type="ProgressBar" parent="UI/HUD/VitalsContainer/OxygenSection"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="StaminaSection" type="VBoxContainer" parent="UI/HUD/VitalsContainer"]
+layout_mode = 2
+
+[node name="StaminaLabel" type="Label" parent="UI/HUD/VitalsContainer/StaminaSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "STAMINA: 100 / 100"
+
+[node name="StaminaBar" type="ProgressBar" parent="UI/HUD/VitalsContainer/StaminaSection"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="ControlsHint" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -350.0
+offset_top = -45.0
+offset_right = 350.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 0.75)
+theme_override_font_sizes/font_size = 14
+text = "WASD / Arrows: 8-Dir Move  |  Shift: Sprint  |  Walk off pod to dive into water"
+horizontal_alignment = 1

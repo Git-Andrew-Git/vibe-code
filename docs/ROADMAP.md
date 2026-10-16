@@ -7,10 +7,10 @@
 - [x] Boot scene (`Main.tscn` + `Main.gd`) with HUD display
 - [x] Core design documentation (GDD, Story, Art Bible, Audio Bible)
 
-## M1 — Character Controller & Basic Water Physics
-- [ ] 2D Top-down / 8-directional player movement
-- [ ] Swimming vs. walking state machine
-- [ ] Camera follow with smooth drag & viewport bounds
+## M1 — Character Controller & Basic Water Physics (COMPLETE)
+- [x] 2D Top-down / 8-directional player movement
+- [x] Swimming vs. walking state machine
+- [x] Camera follow with smooth drag & viewport bounds
 
 ## M2 — TileMap World & Water Shaders
 - [ ] TileMapLayer setup for shallows, sand, deep water
