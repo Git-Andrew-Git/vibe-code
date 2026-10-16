@@ -71,3 +71,4 @@ func _init() -> void:
 		printerr("Failed to save seabed_tileset.png, code: ", err)
 
 	quit()
+

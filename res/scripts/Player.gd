@@ -3,7 +3,7 @@ class_name Player
 
 ## Player - 2D Open-World Survival Character Controller
 ## Handles 8-directional top-down movement, swimming vs. walking physics,
-## stamina/oxygen consumption, camera tracking, and procedural visual effects.
+## depth-based oxygen & survival consumption, hotbar input, and visual effects.
 
 enum MovementMode {
 	SWIMMING,
@@ -38,6 +38,7 @@ enum MovementMode {
 
 var is_sprinting: bool = false
 var facing_direction: Vector2 = Vector2.DOWN
+var depth_meters: float = 0.0
 var _kick_phase: float = 0.0
 
 @onready var visual_root: Node2D = $Visual
@@ -48,11 +49,34 @@ func _ready() -> void:
 	add_to_group("Player")
 	EventBus.player_died.connect(_on_player_died)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_inventory"):
+		EventBus.ui_toggle_requested.emit("inventory")
+	elif event.is_action_pressed("hotbar_1"):
+		GameState.use_or_equip_slot(0)
+	elif event.is_action_pressed("hotbar_2"):
+		GameState.use_or_equip_slot(1)
+	elif event.is_action_pressed("hotbar_3"):
+		GameState.use_or_equip_slot(2)
+	elif event.is_action_pressed("hotbar_4"):
+		GameState.use_or_equip_slot(3)
+	elif event.is_action_pressed("hotbar_5"):
+		GameState.use_or_equip_slot(4)
+
 func _physics_process(delta: float) -> void:
+	_update_depth_and_zone()
 	_handle_input_and_movement(delta)
 	_handle_survival_stats(delta)
 	_update_animation_and_visuals(delta)
 	move_and_slide()
+
+func _update_depth_and_zone() -> void:
+	# Calculate depth based on distance from the shallows pod
+	var dist_from_pod := global_position.length()
+	depth_meters = maxf(0.0, (dist_from_pod - 180.0) / 25.0)
+
+	var target_zone := "Deep Trenches" if depth_meters > 75.0 else "Alien Shallows"
+	GameState.set_zone(target_zone)
 
 func _handle_input_and_movement(delta: float) -> void:
 	var input_vector := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -67,8 +91,11 @@ func _handle_input_and_movement(delta: float) -> void:
 	var friction: float
 	var rot_speed: float
 
+	# Fins equipment bonus
+	var fin_bonus: float = 1.35 if GameState.equipped_fins != "" else 1.0
+
 	if mode == MovementMode.SWIMMING:
-		target_speed = swim_sprint_speed if is_sprinting else swim_speed
+		target_speed = (swim_sprint_speed if is_sprinting else swim_speed) * fin_bonus
 		accel = swim_acceleration
 		friction = swim_friction
 		rot_speed = swim_rotation_speed
@@ -98,7 +125,11 @@ func _handle_survival_stats(delta: float) -> void:
 
 	# Oxygen
 	if mode == MovementMode.SWIMMING:
-		var current_oxygen := GameState.modify_stat("oxygen", -oxygen_drain_swim * delta)
+		# Deeper diving increases oxygen consumption due to water pressure
+		var depth_mult: float = 1.0 + clampf(depth_meters * 0.015, 0.0, 1.2)
+		var drain := oxygen_drain_swim * depth_mult
+
+		var current_oxygen := GameState.modify_stat("oxygen", -drain * delta)
 		if current_oxygen <= 0.0:
 			GameState.modify_stat("health", -suffocation_damage * delta)
 	else:
@@ -133,4 +164,3 @@ func set_movement_mode(new_mode: MovementMode) -> void:
 
 func _on_player_died() -> void:
 	print("Player health depleted. Game over triggered.")
-

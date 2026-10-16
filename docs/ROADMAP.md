@@ -17,11 +17,11 @@
 - [x] 2D Animated Water Caustics shader
 - [x] Day/Night visual tone-mapping (CanvasModulate)
 
-## M3 — Survival Stats & Inventory System
-- [ ] Oxygen meter + underwater depletion logic
-- [ ] Items resource schema (`.tres`)
-- [ ] Inventory grid UI + Hotbar
-- [ ] Crafting recipe engine
+## M3 — Survival Stats & Inventory System (COMPLETE)
+- [x] Oxygen meter + underwater depletion logic
+- [x] Items resource schema (`.tres`)
+- [x] Inventory grid UI + Hotbar
+- [x] Crafting recipe engine
 
 ## M4 — Ecosystem (Flora & Fauna)
 - [ ] Harvestable kelp and coral nodes

@@ -47,3 +47,4 @@ func _evaluate_target_color(time_val: float) -> void:
 			target_color = c1.lerp(c2, t)
 			return
 	target_color = SCHEDULE[0]["color"]
+

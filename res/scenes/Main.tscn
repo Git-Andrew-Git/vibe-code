@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://res/scripts/Main.gd" id="1_main"]
 [ext_resource type="TileSet" path="res://res/materials/seabed_tileset.tres" id="2_tileset"]
@@ -9,6 +9,10 @@
 [ext_resource type="PackedScene" path="res://res/scenes/Player.tscn" id="7_player"]
 [ext_resource type="Material" path="res://res/materials/water_caustics_material.tres" id="8_watermat"]
 [ext_resource type="Script" path="res://res/scripts/DayNightCycle.gd" id="9_daynight"]
+[ext_resource type="Script" path="res://res/scripts/HarvestableNode.gd" id="10_harvest"]
+[ext_resource type="Script" path="res://res/scripts/HotbarUI.gd" id="11_hotbar"]
+[ext_resource type="Script" path="res://res/scripts/NotificationToastUI.gd" id="12_toast"]
+[ext_resource type="Script" path="res://res/scripts/InventoryMenuUI.gd" id="13_invmenu"]
 
 [sub_resource type="Gradient" id="Gradient_plankton"]
 colors = PackedColorArray(0.3, 0.9, 0.8, 0.6, 0.1, 0.4, 0.6, 0)
@@ -26,6 +30,9 @@ height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_harvest"]
+radius = 35.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -98,6 +105,111 @@ color = Color(1, 0.3, 0.2, 1)
 energy = 1.4
 texture = SubResource("GradientTexture2D_light")
 
+[node name="Harvestables" type="Node2D" parent="Environment"]
+z_index = 3
+
+[node name="TitaniumOutcrop1" type="Area2D" parent="Environment/Harvestables"]
+position = Vector2(-280, -160)
+script = ExtResource("10_harvest")
+item_id = "titanium"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Harvestables/TitaniumOutcrop1"]
+shape = SubResource("CircleShape2D_harvest")
+
+[node name="PromptLabel" type="Label" parent="Environment/Harvestables/TitaniumOutcrop1"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Harvest Titanium"
+horizontal_alignment = 1
+
+[node name="TitaniumOutcrop2" type="Area2D" parent="Environment/Harvestables"]
+position = Vector2(340, -190)
+script = ExtResource("10_harvest")
+item_id = "titanium"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Harvestables/TitaniumOutcrop2"]
+shape = SubResource("CircleShape2D_harvest")
+
+[node name="PromptLabel" type="Label" parent="Environment/Harvestables/TitaniumOutcrop2"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Harvest Titanium"
+horizontal_alignment = 1
+
+[node name="CopperVein1" type="Area2D" parent="Environment/Harvestables"]
+position = Vector2(-360, 250)
+script = ExtResource("10_harvest")
+item_id = "copper_ore"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Harvestables/CopperVein1"]
+shape = SubResource("CircleShape2D_harvest")
+
+[node name="PromptLabel" type="Label" parent="Environment/Harvestables/CopperVein1"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Harvest Copper"
+horizontal_alignment = 1
+
+[node name="CopperVein2" type="Area2D" parent="Environment/Harvestables"]
+position = Vector2(420, 230)
+script = ExtResource("10_harvest")
+item_id = "copper_ore"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Harvestables/CopperVein2"]
+shape = SubResource("CircleShape2D_harvest")
+
+[node name="PromptLabel" type="Label" parent="Environment/Harvestables/CopperVein2"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Harvest Copper"
+horizontal_alignment = 1
+
+[node name="KelpStalk1" type="Area2D" parent="Environment/Harvestables"]
+position = Vector2(-190, -340)
+script = ExtResource("10_harvest")
+item_id = "kelp_fiber"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Harvestables/KelpStalk1"]
+shape = SubResource("CircleShape2D_harvest")
+
+[node name="PromptLabel" type="Label" parent="Environment/Harvestables/KelpStalk1"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Harvest Kelp"
+horizontal_alignment = 1
+
+[node name="KelpStalk2" type="Area2D" parent="Environment/Harvestables"]
+position = Vector2(210, -330)
+script = ExtResource("10_harvest")
+item_id = "kelp_fiber"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Harvestables/KelpStalk2"]
+shape = SubResource("CircleShape2D_harvest")
+
+[node name="PromptLabel" type="Label" parent="Environment/Harvestables/KelpStalk2"]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Harvest Kelp"
+horizontal_alignment = 1
+
 [node name="Player" parent="." instance=ExtResource("7_player")]
 z_index = 5
 
@@ -133,8 +245,8 @@ layout_mode = 0
 offset_left = 32.0
 offset_top = 28.0
 offset_right = 400.0
-offset_bottom = 140.0
-theme_override_constants/separation = 6
+offset_bottom = 160.0
+theme_override_constants/separation = 5
 
 [node name="TitleLabel" type="Label" parent="UI/HUD/InfoContainer"]
 layout_mode = 2
@@ -146,15 +258,21 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Zone: Alien Shallows"
 
+[node name="DepthLabel" type="Label" parent="UI/HUD/InfoContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "Depth: 0m"
+
 [node name="TimeLabel" type="Label" parent="UI/HUD/InfoContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 text = "Time: 08:00"
 
 [node name="MovementModeLabel" type="Label" parent="UI/HUD/InfoContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.75, 0.25, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 14
 text = "State: WALKING (Aboard Pod)"
 
 [node name="VitalsContainer" type="VBoxContainer" parent="UI/HUD"]
@@ -163,22 +281,22 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 32.0
-offset_top = -180.0
+offset_top = -240.0
 offset_right = 360.0
-offset_bottom = -30.0
+offset_bottom = -25.0
 grow_vertical = 0
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
 
 [node name="HealthSection" type="VBoxContainer" parent="UI/HUD/VitalsContainer"]
 layout_mode = 2
 
 [node name="HealthLabel" type="Label" parent="UI/HUD/VitalsContainer/HealthSection"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "HEALTH: 100 / 100"
 
 [node name="HealthBar" type="ProgressBar" parent="UI/HUD/VitalsContainer/HealthSection"]
-custom_minimum_size = Vector2(0, 16)
+custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
 value = 100.0
 show_percentage = false
@@ -188,11 +306,11 @@ layout_mode = 2
 
 [node name="OxygenLabel" type="Label" parent="UI/HUD/VitalsContainer/OxygenSection"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "OXYGEN: 100 / 100"
 
 [node name="OxygenBar" type="ProgressBar" parent="UI/HUD/VitalsContainer/OxygenSection"]
-custom_minimum_size = Vector2(0, 16)
+custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
 value = 100.0
 show_percentage = false
@@ -202,14 +320,58 @@ layout_mode = 2
 
 [node name="StaminaLabel" type="Label" parent="UI/HUD/VitalsContainer/StaminaSection"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "STAMINA: 100 / 100"
 
 [node name="StaminaBar" type="ProgressBar" parent="UI/HUD/VitalsContainer/StaminaSection"]
-custom_minimum_size = Vector2(0, 16)
+custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
 value = 100.0
 show_percentage = false
+
+[node name="HungerSection" type="VBoxContainer" parent="UI/HUD/VitalsContainer"]
+layout_mode = 2
+
+[node name="HungerLabel" type="Label" parent="UI/HUD/VitalsContainer/HungerSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "FOOD: 100 / 100"
+
+[node name="HungerBar" type="ProgressBar" parent="UI/HUD/VitalsContainer/HungerSection"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="ThirstSection" type="VBoxContainer" parent="UI/HUD/VitalsContainer"]
+layout_mode = 2
+
+[node name="ThirstLabel" type="Label" parent="UI/HUD/VitalsContainer/ThirstSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "WATER: 100 / 100"
+
+[node name="ThirstBar" type="ProgressBar" parent="UI/HUD/VitalsContainer/ThirstSection"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="Hotbar" type="HBoxContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -225.0
+offset_top = -90.0
+offset_right = 225.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
+script = ExtResource("11_hotbar")
 
 [node name="ControlsHint" type="Label" parent="UI/HUD"]
 layout_mode = 1
@@ -218,13 +380,140 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -350.0
-offset_top = -45.0
-offset_right = 350.0
-offset_bottom = -20.0
+offset_left = -400.0
+offset_top = -26.0
+offset_right = 400.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 0.75)
-theme_override_font_sizes/font_size = 14
-text = "WASD / Arrows: 8-Dir Move  |  Shift: Sprint  |  Walk off pod to dive into water"
+theme_override_font_sizes/font_size = 13
+text = "WASD: Move | Shift: Sprint | E: Harvest | 1-5: Use Hotbar | TAB: PDA / Fabricator"
 horizontal_alignment = 1
+
+[node name="PDAButton" type="Button" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 28.0
+offset_right = -32.0
+offset_bottom = 68.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 14
+text = "[TAB] PDA / Fabricator"
+
+[node name="Toasts" type="VBoxContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 80.0
+offset_right = -32.0
+offset_bottom = 280.0
+grow_horizontal = 0
+theme_override_constants/separation = 6
+script = ExtResource("12_toast")
+
+[node name="InventoryModal" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("13_invmenu")
+
+[node name="DimOverlay" type="ColorRect" parent="UI/InventoryModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.08, 0.75)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/InventoryModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/InventoryModal/CenterContainer"]
+custom_minimum_size = Vector2(900, 560)
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="UI/InventoryModal/CenterContainer/Panel"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Title" type="Label" parent="UI/InventoryModal/CenterContainer/Panel/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "  PDA STORAGE & EMERGENCY FABRICATOR"
+
+[node name="CloseButton" type="Button" parent="UI/InventoryModal/CenterContainer/Panel/Header"]
+custom_minimum_size = Vector2(40, 36)
+layout_mode = 2
+text = "X"
+
+[node name="HBox" type="HBoxContainer" parent="UI/InventoryModal/CenterContainer/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="InventorySection" type="VBoxContainer" parent="UI/InventoryModal/CenterContainer/Panel/HBox"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="UI/InventoryModal/CenterContainer/Panel/HBox/InventorySection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "INVENTORY (24 SLOTS)"
+
+[node name="Grid" type="GridContainer" parent="UI/InventoryModal/CenterContainer/Panel/HBox/InventorySection"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 4
+
+[node name="EquipStatus" type="VBoxContainer" parent="UI/InventoryModal/CenterContainer/Panel/HBox/InventorySection"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TankLabel" type="Label" parent="UI/InventoryModal/CenterContainer/Panel/HBox/InventorySection/EquipStatus"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "O2 Tank: None (Standard 100s)"
+
+[node name="FinsLabel" type="Label" parent="UI/InventoryModal/CenterContainer/Panel/HBox/InventorySection/EquipStatus"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Fins: None (Standard Speed)"
+
+[node name="FabricatorSection" type="VBoxContainer" parent="UI/InventoryModal/CenterContainer/Panel/HBox"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="UI/InventoryModal/CenterContainer/Panel/HBox/FabricatorSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "FABRICATOR BLUEPRINTS"
+
+[node name="Scroll" type="ScrollContainer" parent="UI/InventoryModal/CenterContainer/Panel/HBox/FabricatorSection"]
+custom_minimum_size = Vector2(0, 420)
+layout_mode = 2
+
+[node name="RecipeList" type="VBoxContainer" parent="UI/InventoryModal/CenterContainer/Panel/HBox/FabricatorSection/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
