@@ -92,7 +92,8 @@ func _update_metabolism_ui() -> void:
 
 func _update_depth_ui() -> void:
 	if player and depth_label:
-		var d: float = player.get("depth_meters")
+		var d_val = player.get("depth_meters")
+		var d: float = float(d_val) if d_val != null else 0.0
 		depth_label.text = "Depth: %dm" % int(d)
 
 func _on_time_changed(hour: int, minute: int) -> void:

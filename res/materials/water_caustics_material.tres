@@ -9,4 +9,5 @@ shader_parameter/caustic_color = Color(0.35, 0.88, 0.95, 0.4)
 shader_parameter/caustic_scale = 0.006
 shader_parameter/caustic_speed = 0.75
 shader_parameter/distortion_strength = 0.004
+shader_parameter/water_surface_y = 0.0
 

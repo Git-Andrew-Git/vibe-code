@@ -254,8 +254,9 @@ func _ensure_default_inputs() -> void:
 		"move_right": [KEY_D, KEY_RIGHT],
 		"move_up": [KEY_W, KEY_UP],
 		"move_down": [KEY_S, KEY_DOWN],
+		"jump": [KEY_SPACE],
 		"sprint": [KEY_SHIFT],
-		"interact": [KEY_E, KEY_F, KEY_SPACE],
+		"interact": [KEY_E, KEY_F],
 		"toggle_inventory": [KEY_TAB, KEY_I],
 		"hotbar_1": [KEY_1],
 		"hotbar_2": [KEY_2],
@@ -270,6 +271,12 @@ func _ensure_default_inputs() -> void:
 				var ev := InputEventKey.new()
 				ev.physical_keycode = key_code
 				InputMap.action_add_event(action, ev)
+
+	# Ensure KEY_SPACE is not assigned to interact
+	if InputMap.has_action("interact"):
+		for event in InputMap.action_get_events("interact"):
+			if event is InputEventKey and event.physical_keycode == KEY_SPACE:
+				InputMap.action_erase_event("interact", event)
 
 func save_game() -> bool:
 	var data := {

@@ -21,13 +21,15 @@ var flee_timer: float = 0.0
 var wander_timer: float = 0.0
 var tail_phase: float = 0.0
 var is_player_in_catch_range: bool = false
+var home_depth_y: float = 0.0
 
 @onready var prompt_label: Label = $PromptLabel
 @onready var visual_root: Node2D = $Visual
 
 func _ready() -> void:
 	add_to_group("PassiveFauna")
-	target_direction = Vector2.RIGHT.rotated(randf() * TAU)
+	home_depth_y = global_position.y
+	_pick_wander_direction()
 	wander_timer = randf_range(2.0, 5.0)
 
 	var catch_area: Area2D = $CatchArea
@@ -53,6 +55,7 @@ func _check_threats(delta: float) -> void:
 		flee_timer -= delta
 		if flee_timer <= 0.0:
 			state = State.WANDERING
+			_pick_wander_direction()
 		return
 
 	# Scan for player or predators
@@ -63,7 +66,12 @@ func _check_threats(delta: float) -> void:
 			if diff.length() < detection_radius:
 				state = State.FLEEING
 				flee_timer = 2.5
-				target_direction = diff.normalized()
+				# Flee direction: generally away from threat, with horizontal emphasis
+				var flee_dir := diff.normalized()
+				var h_dir := flee_dir.x
+				if absf(h_dir) < 0.2:
+					h_dir = 1.0 if randf() > 0.5 else -1.0
+				target_direction = Vector2(h_dir * 1.5, flee_dir.y * 0.4).normalized()
 				return
 
 func _update_movement(delta: float) -> void:
@@ -75,12 +83,28 @@ func _update_movement(delta: float) -> void:
 			wander_timer = randf_range(3.0, 6.0)
 			_calculate_flock_direction()
 
-		velocity = velocity.move_toward(target_direction * wander_speed, swim_accel * delta)
+		# Gentle drift back toward home depth band
+		var depth_diff := home_depth_y - global_position.y
+		var depth_drift := clampf(depth_diff * 0.015, -0.3, 0.3)
+		var desired_dir := Vector2(target_direction.x, target_direction.y + depth_drift).normalized()
+		velocity = velocity.move_toward(desired_dir * wander_speed, swim_accel * delta)
 
-	# Steer visual rotation
+	# Steer visual orientation (side-view: flip + tilt, no 360 rotation)
+	if velocity.x < 0.0:
+		visual_root.scale.x = -1.0
+	elif velocity.x > 0.0:
+		visual_root.scale.x = 1.0
+
 	if velocity.length() > 5.0:
-		var target_angle := velocity.angle()
-		visual_root.rotation = lerp_angle(visual_root.rotation, target_angle, delta * 8.0)
+		visual_root.rotation = clamp(atan2(velocity.y, abs(velocity.x)), -0.44, 0.44)
+
+func _pick_wander_direction() -> void:
+	var h_dir := randf_range(-1.0, 1.0)
+	if absf(h_dir) < 0.25:
+		h_dir = 0.6 if h_dir >= 0.0 else -0.6
+	var depth_diff := home_depth_y - global_position.y
+	var depth_bias := clampf(depth_diff / 120.0, -0.3, 0.3)
+	target_direction = Vector2(h_dir, randf_range(-0.3, 0.3) + depth_bias).normalized()
 
 func _calculate_flock_direction() -> void:
 	var neighbors := get_tree().get_nodes_in_group("PassiveFauna")
@@ -98,12 +122,21 @@ func _calculate_flock_direction() -> void:
 				if dist < 45.0:
 					separation -= offset.normalized() / maxf(dist, 1.0)
 
+	var depth_diff := home_depth_y - global_position.y
+	var depth_bias := clampf(depth_diff / 100.0, -0.3, 0.3)
+
 	if count > 0:
 		state = State.FLOCKING
-		target_direction = (avg_dir / float(count) + separation * 2.0 + Vector2.RIGHT.rotated(randf() * TAU) * 0.3).normalized()
+		var boid_dir := avg_dir / float(count) + separation * 2.0
+		# Horizontal bias: preserve horizontal school flow, gentle vertical variation, depth return
+		var h := boid_dir.x + randf_range(-0.2, 0.2)
+		if absf(h) < 0.15:
+			h = 0.5 if h >= 0.0 else -0.5
+		var v := boid_dir.y * 0.35 + depth_bias + randf_range(-0.1, 0.1)
+		target_direction = Vector2(h, v).normalized()
 	else:
 		state = State.WANDERING
-		target_direction = Vector2.RIGHT.rotated(randf() * TAU)
+		_pick_wander_direction()
 
 func _update_visuals(delta: float) -> void:
 	var spd := velocity.length()
@@ -135,4 +168,3 @@ func catch_fish() -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.2)
 	tween.tween_callback(queue_free)
-
